@@ -4,6 +4,7 @@ import request from 'request';
 import Utils from './Utils';
 
 import Task from './Task';
+import TaskForm from './TaskForm';
 
 class TaskList extends Component {
   constructor(props) {
@@ -11,6 +12,8 @@ class TaskList extends Component {
     this.state = {
       tasks: []
     };
+
+    this.addTaskToList = this.addTaskToList.bind(this);
   }
 
   componentDidMount() {
@@ -51,6 +54,14 @@ class TaskList extends Component {
     )
   }
 
+  addTaskToList(task) {
+    this.setState((prevState, props) => {
+      var newTasks = prevState.tasks.slice(0);
+      newTasks.push(task);
+      return { tasks: newTasks };
+    });
+  }
+
   render() {
     return (
       <div>
@@ -59,6 +70,9 @@ class TaskList extends Component {
 
         <h1>Today</h1>
         {this.todaysTasks()}
+
+        <TaskForm
+          onTaskCreated={this.addTaskToList}/>
       </div>
     );
   }
