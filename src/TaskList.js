@@ -21,22 +21,44 @@ class TaskList extends Component {
     });
   }
 
-  listTasks() {
+  todaysTasks() {
     return this
       .state
       .tasks
-      .map((task) =>
+      .filter(task => {
+        return new Date(task.due_to).setHours(0, 0, 0, 0) ===
+               new Date().setHours(0, 0, 0, 0);
+      })
+      .map((task) => this.taskComponent(task));
+  }
+
+  pastDueTasks() {
+    return this
+      .state
+      .tasks
+      .filter(task => {
+        return (new Date(task.due_to).setHours(0, 0, 0, 0) <
+                new Date().setHours(0, 0, 0, 0) && !task.completed)
+      })
+      .map((task) => this.taskComponent(task));
+  }
+
+  taskComponent(task) {
+    return (
       <Task
         task={task}
         key={task.id}/>
-    );
+    )
   }
 
   render() {
     return (
       <div>
-        <h1>Tasks</h1>
-        {this.listTasks()}
+        <h1>Past due</h1>
+        {this.pastDueTasks()}
+
+        <h1>Today</h1>
+        {this.todaysTasks()}
       </div>
     );
   }
