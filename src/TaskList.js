@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-class App extends Component {
+class TaskList extends Component {
   render() {
     return (
       <div className="centered" >
@@ -10,4 +10,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default TaskList;
