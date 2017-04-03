@@ -14,6 +14,7 @@ class TaskList extends Component {
     };
 
     this.addTaskToList = this.addTaskToList.bind(this);
+    this.updateTask = this.updateTask.bind(this);
   }
 
   componentDidMount() {
@@ -50,7 +51,9 @@ class TaskList extends Component {
     return (
       <Task
         task={task}
-        key={task.id}/>
+        key={task.id}
+        onToggleCompleted={this.updateTask}
+      />
     )
   }
 
@@ -58,6 +61,15 @@ class TaskList extends Component {
     this.setState((prevState, props) => {
       var newTasks = prevState.tasks.slice(0);
       newTasks.push(task);
+      return { tasks: newTasks };
+    });
+  }
+
+  updateTask(task) {
+    this.setState((prevState, props) => {
+      var newTasks = prevState.tasks.slice(0);
+      const taskIndex = newTasks.map(t => { return t.id }).indexOf(task.id);
+      newTasks.splice(taskIndex, 1, task);
       return { tasks: newTasks };
     });
   }
@@ -72,7 +84,7 @@ class TaskList extends Component {
         {this.todaysTasks()}
 
         <TaskForm
-          onTaskCreated={this.addTaskToList}/>
+          onTaskCreated={this.addTaskToList} />
       </div>
     );
   }
