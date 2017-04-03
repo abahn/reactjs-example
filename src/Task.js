@@ -8,6 +8,7 @@ class Task extends Component {
     super(props);
 
     this.toggleCompleted = this.toggleCompleted.bind(this);
+    this.remove = this.remove.bind(this);
   }
   stateClass() {
     return this.props.task.completed
@@ -30,6 +31,16 @@ class Task extends Component {
     });
   }
 
+  remove() {
+    request({
+      url: `${Utils.apiHost}${this.props.task.id}`,
+      method: 'DELETE'
+    },
+    (error, respone, body) => {
+      this.props.onRemoved(this.props.task);
+    });
+  }
+
   render() {
     const stateClass = this.stateClass();
     return (
@@ -40,6 +51,9 @@ class Task extends Component {
           <div className="btn-group pull-right">
             <a className="btn btn-default" onClick={this.toggleCompleted}>
               <span className="glyphicon glyphicon-ok"></span>
+            </a>
+            <a className="btn btn-default" onClick={this.remove}>
+              <span className="glyphicon glyphicon-remove"></span>
             </a>
           </div>
         </div>

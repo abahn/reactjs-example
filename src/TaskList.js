@@ -15,6 +15,7 @@ class TaskList extends Component {
 
     this.addTaskToList = this.addTaskToList.bind(this);
     this.updateTask = this.updateTask.bind(this);
+    this.removeTask = this.removeTask.bind(this);
   }
 
   componentDidMount() {
@@ -53,6 +54,7 @@ class TaskList extends Component {
         task={task}
         key={task.id}
         onToggleCompleted={this.updateTask}
+        onRemoved={this.removeTask}
       />
     )
   }
@@ -72,6 +74,16 @@ class TaskList extends Component {
       newTasks.splice(taskIndex, 1, task);
       return { tasks: newTasks };
     });
+  }
+
+  removeTask(task) {
+    this.setState((prevState, props) => {
+      const newTasks = prevState.tasks.filter(t => {
+        return t.id !== task.id
+      });
+
+      return { tasks: newTasks };
+    })
   }
 
   render() {
